@@ -1,0 +1,72 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "web3-units",
+  "author": "Alex Angel <alexangel.j@gmail.com>",
+  "keywords": [
+    "web3",
+    "ethers.js",
+    "solidity",
+    "ethereum",
+    "typescript",
+    "javascript",
+    "bignumber",
+    "dapp"
+  ],
+  "description": "Simple utility package extending ethers.js for better Web3 units",
+  "module": "dist/lib.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/lib.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/lib.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "dependencies": {
+    "@ethersproject/bignumber": "^5.4.0",
+    "@ethersproject/constants": "^5.4.0",
+    "@ethersproject/units": "^5.4.0"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^5.0.1",
+    "@types/jest": "^26.0.24",
+    "husky": "^7.0.1",
+    "size-limit": "^5.0.1",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
+  }
+}
