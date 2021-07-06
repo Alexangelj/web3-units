@@ -31,7 +31,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "@alexangelj/web3-units",
+  "name": "web3-units",
   "author": "Alex Angel <alexangel.j@gmail.com>",
   "keywords": [
     "web3",
