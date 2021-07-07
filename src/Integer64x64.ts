@@ -30,7 +30,7 @@ export class Integer64x64 {
    * @return Raw divided by 2^64
    */
   get parsed(): number {
-    return parseFloat(this.raw.div(Integer64x64.Denominator).toString())
+    return +this.raw.toString() / +Integer64x64.Denominator.toString()
   }
 
   /**
