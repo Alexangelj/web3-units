@@ -1,15 +1,15 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { Percentage } from './Percentage'
 import { Wei } from './Wei'
-export function parseInt64x64(x: BigNumberish): Integer64x64 {
-  return new Integer64x64(toBN(parseInt(x.toString())).mul(Integer64x64.Denominator))
-}
+import { toBN } from './utils'
 
 /**
- * @notice Converts to a BigNumber
+ * @notice Parses a regular value into a floating point 64x64 numerator, with 2e64 denominator
+ * @param value Uint value not in wei
+ * @returns Integer class with a raw value that has a denominator of 2e64
  */
-export function toBN(val: BigNumberish): BigNumber {
-  return BigNumber.from(val.toString())
+export function parseInt64x64(value: BigNumberish): Integer64x64 {
+  return new Integer64x64(Integer64x64.Denominator.mul(value.toString()))
 }
 
 /**

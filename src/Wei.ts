@@ -4,7 +4,7 @@ import { formatUnits, parseEther } from '@ethersproject/units'
 /**
  * @notice Multiplies by 10**18 and returns a Wei instance of the value
  */
-export function parseWei(x: BigNumberish): Wei {
+export const parseWei = (x: BigNumberish): Wei => {
   return new Wei(parseEther(x.toString()))
 }
 
