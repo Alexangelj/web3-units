@@ -5,7 +5,8 @@ import { toBN } from './utils'
 
 /**
  * @notice Parses a regular value into a floating point 64x64 numerator, with 2e64 denominator
- * @param value Uint value not in wei
+ * @dev Do not use for 64x64 int128 values returned by smart contracts. A raw class can be instantiated with that value.
+ * @param value An amount
  * @returns Integer class with a raw value that has a denominator of 2e64
  */
 export function parseInt64x64(value: BigNumberish): Integer64x64 {
@@ -34,24 +35,28 @@ export class Integer64x64 {
   }
 
   /**
-   * @return Parsed value with `MANTISSA` decimals as an integer
+   * @return Parsed value floored and divided by 1e18
    */
-  get integer(): number {
-    return Math.floor(this.parsed * Wei.Mantissa)
+  get wei(): number {
+    return this.parsed / Wei.Mantissa
   }
 
   /**
-   * @return Parsed value floored and with MANTISSA decimals
+   * @return Parsed value floored and divided by 1e9
    */
   get float(): number {
-    return this.integer / Wei.Mantissa
+    return this.parsed / Integer64x64.Mantissa
   }
 
   /**
-   * @return float value in units of percentages
+   * @return Float value divided by 1e4
    */
   get percentage(): number {
     return this.float / Percentage.Mantissa
+  }
+
+  toString(): string {
+    return this.raw.toString()
   }
 
   /**
@@ -59,5 +64,12 @@ export class Integer64x64 {
    */
   static get Denominator(): BigNumber {
     return toBN(2).pow(64)
+  }
+
+  /**
+   * @return Mantissa used to scale uint values in the smart contracts
+   */
+  static get Mantissa(): number {
+    return Math.pow(10, 9)
   }
 }

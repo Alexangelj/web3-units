@@ -70,6 +70,6 @@ export class Wei {
    * @return Mantissa used to scale uint values in the smart contracts
    */
   static get Mantissa(): number {
-    return Math.pow(10, 9)
+    return Math.pow(10, 18)
   }
 }

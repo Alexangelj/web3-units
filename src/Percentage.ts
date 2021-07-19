@@ -29,6 +29,10 @@ export class Percentage {
     return parseFloat(this.raw.toString()) / Percentage.Mantissa
   }
 
+  toString(): string {
+    return this.raw.toString()
+  }
+
   /**
    * @return Mantissa used to scale percentages in the smart contracts
    */
