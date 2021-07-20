@@ -48,11 +48,11 @@
   "size-limit": [
     {
       "path": "dist/lib.cjs.production.min.js",
-      "limit": "20 KB"
+      "limit": "30 KB"
     },
     {
       "path": "dist/lib.esm.js",
-      "limit": "20 KB"
+      "limit": "30 KB"
     }
   ],
   "dependencies": {

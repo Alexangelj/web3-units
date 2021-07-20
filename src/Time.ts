@@ -1,4 +1,14 @@
 import { BigNumberish } from '@ethersproject/bignumber'
+
+/**
+ * @notice Parses a time unit of years into a Time class
+ * @param years Time in years
+ * @returns Time class which has `raw` as seconds
+ */
+export const parseTime = (years: number): Time => {
+  return new Time(years * Time.YearInSeconds)
+}
+
 /**
  * @notice Used to return seconds or years, default is seconds
  */
@@ -20,6 +30,10 @@ export class Time {
 
   get seconds(): number {
     return this.raw
+  }
+
+  get now(): number {
+    return +Date.now() / 1000
   }
 
   sub(x: BigNumberish | Time): Time {
