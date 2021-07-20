@@ -1,5 +1,6 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
-import { Integer64x64, toBN, Wei } from '../src'
+import { Integer64x64, parseInt64x64, parsePercentage, parseTime, Percentage, Time, toBN, Wei } from '../src'
 
 describe('Web3-Units', function() {
   describe('Wei', function() {
@@ -18,6 +19,97 @@ describe('Web3-Units', function() {
     it('initializes a fixed point 64x64 integer', async function() {
       const value = new Integer64x64(toBN('11288117352251203228'))
       expect(value.parsed).toBe(0.6119300678291038)
+    })
+
+    it('parseInt', async function() {
+      const value = 1
+      expect(parseInt64x64(value).parsed).toBe(1)
+    })
+
+    it('raw', async function() {
+      const value = 1
+      expect(parseInt64x64(value).raw.toString()).toBe(Integer64x64.Denominator.mul(value).toString())
+    })
+
+    it('wei', async function() {
+      const value = 1
+      expect(parseInt64x64(value).wei).toBe(1 / Wei.Mantissa)
+    })
+
+    it('float', async function() {
+      const value = 1
+      expect(parseInt64x64(value).float).toBe(value / Integer64x64.Mantissa)
+    })
+
+    it('percentage', async function() {
+      const value = 1
+      expect(parseInt64x64(value).percentage).toBe(value / Integer64x64.Mantissa / Percentage.Mantissa)
+    })
+
+    it('toString()', async function() {
+      const value = 1
+      expect(parseInt64x64(value).toString()).toBe(Integer64x64.Denominator.mul(value).toString())
+    })
+  })
+
+  describe('Percentage', function() {
+    it('initializes a fixed point 64x64 integer', async function() {
+      const value = new Integer64x64(toBN('11288117352251203228'))
+      expect(value.parsed).toBe(0.6119300678291038)
+    })
+
+    it('parsePercentage', async function() {
+      const value = 1.25
+      expect(parsePercentage(value).raw).toStrictEqual(toBN(value * Percentage.Mantissa))
+    })
+
+    it('float', async function() {
+      const value = 1.25
+      expect(parsePercentage(value).float).toBe(value)
+    })
+
+    it('toString()', async function() {
+      const value = 1.25
+      expect(parsePercentage(value).toString()).toBe(toBN(value * Percentage.Mantissa).toString())
+    })
+  })
+
+  describe('Time', function() {
+    it('initializes a fixed point 64x64 integer', async function() {
+      const value = new Integer64x64(toBN('11288117352251203228'))
+      expect(value.parsed).toBe(0.6119300678291038)
+    })
+
+    it('parseTime', async function() {
+      const value = 1
+      expect(parseTime(value).raw).toStrictEqual(Math.floor(value * Time.YearInSeconds))
+    })
+
+    it('years', async function() {
+      const value = 1
+      expect(parseTime(value).years).toBe(value)
+    })
+
+    it('seconds', async function() {
+      const value = 1
+      expect(parseTime(value).seconds).toBe(Math.floor(value * Time.YearInSeconds))
+    })
+
+    it('sub', async function() {
+      const value = 1
+      expect(parseTime(value).sub(1).raw).toBe(Math.floor(value * Time.YearInSeconds) - 1)
+    })
+
+    it('toString()', async function() {
+      const value = 1
+      expect(parseTime(value).toString()).toBe(Math.floor(value * Time.YearInSeconds).toString())
+    })
+  })
+
+  describe('Utils', function() {
+    it('toBN', async function() {
+      const value = 1
+      expect(toBN(value)).toStrictEqual(BigNumber.from(1))
     })
   })
 })

@@ -4,7 +4,7 @@ import { formatUnits, parseEther } from '@ethersproject/units'
 /**
  * @notice Multiplies by 10**18 and returns a Wei instance of the value
  */
-export function parseWei(x: BigNumberish): Wei {
+export const parseWei = (x: BigNumberish): Wei => {
   return new Wei(parseEther(x.toString()))
 }
 
@@ -70,6 +70,6 @@ export class Wei {
    * @return Mantissa used to scale uint values in the smart contracts
    */
   static get Mantissa(): number {
-    return Math.pow(10, 9)
+    return Math.pow(10, 18)
   }
 }
