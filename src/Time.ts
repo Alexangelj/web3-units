@@ -46,9 +46,10 @@ export class Time {
   }
 
   /**
+   * @notice 60 seconds * 60 minutes * 24 hours * 365 days
    * @return A year in seconds
    */
   static get YearInSeconds(): number {
-    return 31449600
+    return 60 * 60 * 24 * 365
   }
 }
