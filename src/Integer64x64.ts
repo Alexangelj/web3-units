@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { Percentage } from './Percentage'
-import { Wei } from './Wei'
+import { parseWei, Wei } from './Wei'
 import { toBN } from './utils'
 
 /**
@@ -10,7 +10,8 @@ import { toBN } from './utils'
  * @returns Integer class with a raw value that has a denominator of 2e64
  */
 export function parseInt64x64(value: BigNumberish): Integer64x64 {
-  return new Integer64x64(Integer64x64.Denominator.mul(value.toString()))
+  const x = parseWei(value.toString()) // scale value up so it has high precision
+  return new Integer64x64(x.mul(Integer64x64.Denominator).div(parseWei(1)).raw)
 }
 
 /**
@@ -52,7 +53,7 @@ export class Integer64x64 {
    * @return Float value divided by 1e4
    */
   get percentage(): number {
-    return this.float / Percentage.Mantissa
+    return this.parsed / Percentage.Mantissa
   }
 
   toString(): string {
