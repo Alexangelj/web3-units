@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
-import { Integer64x64, parseInt64x64, parsePercentage, parseTime, Percentage, Time, toBN, Wei } from '../src'
+import { FixedPointX64, parseFixedPointX64, parsePercentage, parseTime, Percentage, Time, toBN, Wei } from '../src'
 
 describe('Web3-Units', function() {
   describe('Wei', function() {
@@ -15,46 +15,46 @@ describe('Web3-Units', function() {
     })
   })
 
-  describe('Integer64x64', function() {
+  describe('FixedPointX64', function() {
     it('initializes a fixed point 64x64 integer', async function() {
-      const value = new Integer64x64(toBN('11288117352251203228'))
+      const value = new FixedPointX64(toBN('11288117352251203228'))
       expect(value.parsed).toBe(0.6119300678291038)
     })
 
     it('parseInt', async function() {
       const value = 1
-      expect(parseInt64x64(value).parsed).toBe(1)
+      expect(parseFixedPointX64(value).parsed).toBe(1)
     })
 
     it('raw', async function() {
       const value = 1
-      expect(parseInt64x64(value).raw.toString()).toBe(Integer64x64.Denominator.mul(value).toString())
+      expect(parseFixedPointX64(value).raw.toString()).toBe(FixedPointX64.Denominator.mul(value).toString())
     })
 
     it('wei', async function() {
       const value = 1
-      expect(parseInt64x64(value).wei).toBe(1 / Wei.Mantissa)
+      expect(parseFixedPointX64(value).float).toBe(1 / Wei.Mantissa)
     })
 
     it('float', async function() {
       const value = 1
-      expect(parseInt64x64(value).float).toBe(value / Integer64x64.Mantissa)
+      expect(parseFixedPointX64(value).float).toBe(value / FixedPointX64.Mantissa)
     })
 
     it('percentage', async function() {
       const value = 1
-      expect(parseInt64x64(value).percentage).toBe(value / Integer64x64.Mantissa / Percentage.Mantissa)
+      expect(parseFixedPointX64(value).percentage).toBe(value / FixedPointX64.Mantissa / Percentage.Mantissa)
     })
 
     it('toString()', async function() {
       const value = 1
-      expect(parseInt64x64(value).toString()).toBe(Integer64x64.Denominator.mul(value).toString())
+      expect(parseFixedPointX64(value).toString()).toBe(FixedPointX64.Denominator.mul(value).toString())
     })
   })
 
   describe('Percentage', function() {
     it('initializes a fixed point 64x64 integer', async function() {
-      const value = new Integer64x64(toBN('11288117352251203228'))
+      const value = new FixedPointX64(toBN('11288117352251203228'))
       expect(value.parsed).toBe(0.6119300678291038)
     })
 
@@ -76,7 +76,7 @@ describe('Web3-Units', function() {
 
   describe('Time', function() {
     it('initializes a fixed point 64x64 integer', async function() {
-      const value = new Integer64x64(toBN('11288117352251203228'))
+      const value = new FixedPointX64(toBN('11288117352251203228'))
       expect(value.parsed).toBe(0.6119300678291038)
     })
 

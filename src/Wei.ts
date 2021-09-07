@@ -1,11 +1,13 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
-import { formatUnits, parseEther } from '@ethersproject/units'
+import { formatUnits, parseUnits } from '@ethersproject/units'
 
 /**
- * @notice Multiplies by 10**18 and returns a Wei instance of the value
+ * @notice Multiplies by 10**decimals and returns a Wei instance of the value
+ * @param  x Amount to parse to raw wei value
+ * @param  decimals Amount of precision that the raw wei value would have
  */
-export const parseWei = (x: BigNumberish): Wei => {
-  return new Wei(parseEther(x.toString()))
+export const parseWei = (x: BigNumberish, decimals: number = 18): Wei => {
+  return new Wei(parseUnits(x.toString(), decimals), decimals)
 }
 
 /**
@@ -14,8 +16,10 @@ export const parseWei = (x: BigNumberish): Wei => {
 export class Wei {
   readonly raw: BigNumber
   readonly decimals: number
+
   /**
    * @param raw  Value used or returned during smart contract calls for uints
+   * @param decimals If we need a regular decimal value, how much would we divide by?
    * */
   constructor(raw: BigNumber, decimals: number = 18) {
     this.raw = raw
@@ -30,24 +34,24 @@ export class Wei {
    * @return Float value used in smart contract calls
    */
   get float(): number {
-    return parseFloat(formatUnits(this.raw, this.decimals))
+    return parseFloat(this.parsed)
   }
 
   add(x: BigNumberish | Wei): Wei {
-    return new Wei(this.raw.add(x.toString()))
+    return new Wei(this.raw.add(x.toString()), this.decimals)
   }
 
   sub(x: BigNumberish | Wei): Wei {
-    return new Wei(this.raw.sub(x.toString()))
+    return new Wei(this.raw.sub(x.toString()), this.decimals)
   }
 
   mul(x: BigNumberish | Wei): Wei {
-    return new Wei(this.raw.mul(x.toString()))
+    return new Wei(this.raw.mul(x.toString()), this.decimals)
   }
 
   div(x: BigNumberish | Wei): Wei {
     if (+x.toString() <= 0) return parseWei('0')
-    return new Wei(this.raw.div(x.toString()))
+    return new Wei(this.raw.div(x.toString()), this.decimals)
   }
 
   gt(x: BigNumberish | Wei): boolean {
@@ -70,6 +74,6 @@ export class Wei {
    * @return Mantissa used to scale uint values in the smart contracts
    */
   static get Mantissa(): number {
-    return Math.pow(10, 18)
+    return 18
   }
 }

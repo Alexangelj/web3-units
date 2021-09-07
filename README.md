@@ -8,7 +8,7 @@ This packagage includes several classes which extend `ethers.js` with clearer wa
 
 A class representation of a Wei, returned from the EVM. Has getters that easily parse the value into different units.
 
-### Integer64x64
+### FixedPointX64
 
 Typescript representation of a 64x64 floating point number, a numerator with denominator 2e64, stored as an int128 in solidity.
 
