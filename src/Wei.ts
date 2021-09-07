@@ -62,6 +62,14 @@ export class Wei {
     return this.raw.lt(x.toString())
   }
 
+  gte(x: BigNumberish | Wei): boolean {
+    return this.raw.gte(x.toString())
+  }
+
+  lte(x: BigNumberish | Wei): boolean {
+    return this.raw.lte(x.toString())
+  }
+
   log() {
     console.log(this.parsed)
   }

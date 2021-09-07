@@ -1,19 +1,20 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { Percentage } from './Percentage'
-import { parseWei } from './Wei'
+import { Wei } from './Wei'
 import { toBN } from './utils'
 
 /**
  * @notice Parses a regular value into a signed fixed point 64x64 integer, with 2^64 denominator
  * @dev Do not use for 64x64 int128 values returned by smart contracts. A raw class can be instantiated with that value.
- * @param value Unsigned value as a float
+ * @param value Unsigned value which will be multiplied by 2^64
  * @returns Signed fixed point 64.64 Integer class
  */
-export function parseFixedPointX64(value: number, decimals: number = 18): FixedPointX64 {
-  if (Math.sign(value) < 0) throw new Error(`Attempting to parse signed value: ${value}`)
-  if (value > Math.pow(2, 64 - 1)) throw new Error(`Attempting to parse too large of a number: ${value}`)
-  const x = parseWei(+value << 64, decimals) // scale to a wei value with precision of decimals
-  return new FixedPointX64(x.raw, decimals)
+export function parseFixedPointX64(value: BigNumberish | Wei, decimals: number = 18): FixedPointX64 {
+  if (value instanceof Wei) decimals = value.decimals
+  value = value.toString()
+  if (Math.sign(+value) < 0) throw new Error(`Attempting to parse signed value: ${value}`)
+  if (+value > Math.pow(2, 64 - 1)) throw new Error(`Attempting to parse too large of a number: ${value}`)
+  return new FixedPointX64(FixedPointX64.Denominator.mul(value), decimals)
 }
 
 /**
@@ -26,6 +27,7 @@ export class FixedPointX64 {
   /**
    * @notice Int128s are stored as numerators that all have a denominator of 2^64
    * @param raw  Signed fixed point 64.64 integer
+   * @param decimals Mantissa to scale down by to get float value
    * */
   constructor(raw: BigNumber, decimals: number = 18) {
     this.raw = raw
@@ -62,12 +64,5 @@ export class FixedPointX64 {
    */
   static get Denominator(): BigNumber {
     return toBN(2).pow(64)
-  }
-
-  /**
-   * @return Mantissa used to scale uint values in the smart contracts
-   */
-  static get Mantissa(): number {
-    return 9
   }
 }

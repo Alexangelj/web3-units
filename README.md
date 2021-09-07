@@ -6,15 +6,21 @@ This packagage includes several classes which extend `ethers.js` with clearer wa
 
 ### Wei
 
-A class representation of a Wei, returned from the EVM. Has getters that easily parse the value into different units.
+A class representation of a Wei, returned from the EVM. Has getters that easily parse the value into different units with precision customized by decimal amounts.
+
+`parseWei(value, decimals)` is a wrapper around the `parseUnits` function in ethers, it will scale up `value` by `decimals`, and return a Wei instance.
 
 ### FixedPointX64
 
-Typescript representation of a 64x64 floating point number, a numerator with denominator 2e64, stored as an int128 in solidity.
+Typescript representation of a signed 64x64 fixed point integer, a numerator with denominator 2^64, stored as an int128 in solidity.
+
+`parseFixedPointX64(value, decimals)` will scale value up to `decimals`, then multiply it by 2^64, and return a FixedPointX64 instance.
 
 ### Percentage
 
-Simple class to represent a percentage unit, with a default mantissa of 1e4 (used in smart contract).
+Simple class to represent a percentage unit, with a default mantissa of 4 (used in smart contract).
+
+`parsePercentage(value)` will accept a raw decimal percentage and multiply it by 1e4 and return a Percentage instance.
 
 ### Time
 

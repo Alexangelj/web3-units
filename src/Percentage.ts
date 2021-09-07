@@ -7,7 +7,7 @@ import { toBN } from './utils'
  * @returns Percentage class with a raw percentage value scaled by 1e4
  */
 export const parsePercentage = (percent: number): Percentage => {
-  return new Percentage(toBN(percent * 10 ** Percentage.Mantissa))
+  return new Percentage(toBN(percent * Math.pow(10, Percentage.Mantissa)))
 }
 
 /**
@@ -27,7 +27,7 @@ export class Percentage {
    * @return Float value used in javascript math
    */
   get float(): number {
-    return parseFloat(this.raw.toString()) / 10 ** Percentage.Mantissa
+    return parseFloat(this.raw.toString()) / Math.pow(10, Percentage.Mantissa)
   }
 
   toString(): string {
