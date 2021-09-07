@@ -28,10 +28,16 @@ export class Time {
     return this.raw / Time.YearInSeconds
   }
 
+  /**
+   * @return seconds float value used in smart contracts (e.g. block.timestamp)
+   */
   get seconds(): number {
     return this.raw
   }
 
+  /**
+   * @return Current date timestamp in seconds
+   */
   get now(): number {
     return +Date.now() / 1000
   }
@@ -46,10 +52,10 @@ export class Time {
   }
 
   /**
-   * @notice 60 seconds * 60 minutes * 24 hours * 365 days
+   * @notice ~365.24 days
    * @return A year in seconds
    */
   static get YearInSeconds(): number {
-    return 60 * 60 * 24 * 365
+    return 31556925
   }
 }
