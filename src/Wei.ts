@@ -6,8 +6,8 @@ import { formatUnits, parseUnits } from '@ethersproject/units'
  * @param  x Amount to parse to raw wei value
  * @param  decimals Amount of precision that the raw wei value would have
  */
-export const parseWei = (x: BigNumberish, decimals: number = 18): Wei => {
-  return new Wei(parseUnits(x.toString(), decimals), decimals)
+export function parseWei(x: BigNumberish, decimals: number = 18): Wei {
+  return new Wei(parseUnits((+x.toString()).toFixed(decimals), decimals), decimals)
 }
 
 /**
@@ -70,6 +70,10 @@ export class Wei {
     return this.raw.lte(x.toString())
   }
 
+  eq(x: BigNumberish | Wei): boolean {
+    return this.raw.eq(x.toString())
+  }
+
   log() {
     console.log(this.parsed)
   }
@@ -79,7 +83,7 @@ export class Wei {
   }
 
   /**
-   * @return Mantissa used to scale uint values in the smart contracts
+   * @return Default decimals
    */
   static get Mantissa(): number {
     return 18

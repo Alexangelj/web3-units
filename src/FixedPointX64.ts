@@ -45,14 +45,14 @@ export class FixedPointX64 {
    * @return Parsed value floored and scaled down by 10**decimals
    */
   get float(): number {
-    return this.parsed / 10 ** this.decimals
+    return this.parsed / Math.pow(10, this.decimals)
   }
 
   /**
    * @return Float value divided by 1e4, the precision of Percentage values
    */
   get percentage(): number {
-    return this.parsed / 10 ** Percentage.Mantissa
+    return this.parsed / Math.pow(10, Percentage.Mantissa)
   }
 
   toString(): string {

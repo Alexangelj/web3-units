@@ -7,7 +7,9 @@ import { toBN } from './utils'
  * @returns Percentage class with a raw percentage value scaled by 1e4
  */
 export const parsePercentage = (percent: number): Percentage => {
-  return new Percentage(toBN(percent * Math.pow(10, Percentage.Mantissa)))
+  const scalar = Math.pow(10, Percentage.Mantissa)
+  const floored = Math.floor(percent * scalar)
+  return new Percentage(toBN(floored))
 }
 
 /**
