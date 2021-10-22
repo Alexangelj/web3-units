@@ -22,6 +22,24 @@ describe('Wei', function() {
     expect(value.gt(parseEther('0.5'))).toBe(true)
   })
 
+  it('parseWei#decimal value', async function() {
+    const amount = 1.043534563463461132123123121231
+    const value = parseWei(amount)
+    expect(value.raw).toStrictEqual(parseEther(amount.toFixed(18)))
+  })
+
+  it('parseWei#scientific notation', async function() {
+    const amount = 1.04353e-7
+    const value = parseWei(amount)
+    expect(value.raw).toStrictEqual(parseEther(amount.toFixed(18)))
+  })
+
+  it('parseWei#string', async function() {
+    const amount = '120120556345.312315'
+    const value = parseWei(amount)
+    expect(value.raw).toStrictEqual(parseEther((+amount).toFixed(18)))
+  })
+
   it('parseWei#0 decimals', async function() {
     const decimals = 0
     const amount = 2

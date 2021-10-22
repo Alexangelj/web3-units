@@ -42,6 +42,11 @@ export class Time {
     return +Date.now() / 1000
   }
 
+  add(x: BigNumberish | Time): Time {
+    x = x.toString()
+    return new Time(this.raw + +x.toString())
+  }
+
   sub(x: BigNumberish | Time): Time {
     x = x.toString()
     return new Time(this.raw - +x.toString())
