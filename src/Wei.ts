@@ -1,5 +1,6 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
-import { formatUnits, parseUnits } from '@ethersproject/units'
+import { formatUnits } from '@ethersproject/units'
+import { toBn } from 'evm-bn'
 
 /**
  * @notice Multiplies by 10**decimals and returns a Wei instance of the value
@@ -7,7 +8,8 @@ import { formatUnits, parseUnits } from '@ethersproject/units'
  * @param  decimals Amount of precision that the raw wei value would have
  */
 export function parseWei(x: BigNumberish, decimals: number = 18): Wei {
-  return new Wei(parseUnits((+x.toString()).toFixed(decimals), decimals), decimals)
+  const bn = toBn(x.toString(), decimals)
+  return new Wei(bn, decimals)
 }
 
 /**

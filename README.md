@@ -8,7 +8,7 @@ This packagage includes several classes which extend `ethers.js` with clearer wa
 
 A class representation of a Wei, returned from the EVM. Has getters that easily parse the value into different units with precision customized by decimal amounts.
 
-`parseWei(value, decimals)` is a wrapper around the `parseUnits` function in ethers, it will scale up `value` by `decimals`, and return a Wei instance.
+`parseWei(value, decimals)` is a wrapper around the `parseUnits` function in ethers, it will scale up `value` by `decimals`, and return a Wei instance. Utilizes Paul's `evm-bn` library to convert to a BigNumber.
 
 ### FixedPointX64
 
