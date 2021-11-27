@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { toBN } from './utils'
+import { toBn } from 'evm-bn'
 
 /**
  * @notice Parses a float percentage value with up to 4 decimals (e.g. 0.1) into a mantissa scaled Percentage
@@ -7,9 +7,7 @@ import { toBN } from './utils'
  * @returns Percentage class with a raw percentage value scaled by 1e4
  */
 export const parsePercentage = (percent: number): Percentage => {
-  const scalar = Math.pow(10, Percentage.Mantissa)
-  const floored = Math.floor(percent * scalar)
-  return new Percentage(toBN(floored))
+  return new Percentage(toBn(percent.toString(), 4))
 }
 
 /**
@@ -29,7 +27,14 @@ export class Percentage {
    * @return Float value used in javascript math
    */
   get float(): number {
-    return parseFloat(this.raw.toString()) / Math.pow(10, Percentage.Mantissa)
+    return this.raw.toNumber() / Math.pow(10, Percentage.Mantissa)
+  }
+
+  /**
+   * @return Float value as a string used to display
+   */
+  get parsed(): string {
+    return this.float.toFixed(2)
   }
 
   toString(): string {
