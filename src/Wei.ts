@@ -1,5 +1,5 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
-import { formatUnits } from '@ethersproject/units'
+import { fromBn } from 'evm-bn'
 import { toBn } from 'evm-bn'
 
 /**
@@ -13,11 +13,33 @@ export function parseWei(x: BigNumberish, decimals: number = 18): Wei {
 }
 
 /**
- * @notice EVM Uint representation for wei values
+ * @notice Represents an EVM unsigned integer
  */
 export class Wei {
+  /**
+   * @notice Integer BigNumber used in/from EVM calls
+   */
   readonly raw: BigNumber
+  /**
+   * @notice Tokens in the EVM scale their value amounts by their decimals
+   */
   readonly decimals: number
+
+  private _displayDecimals: number = 2
+
+  /**
+   * @notice Sets the amount of decimals to use when displaying the formatted value
+   */
+  set displayDecimals(x: number) {
+    this._displayDecimals = x
+  }
+
+  /**
+   * @return Amount of decimals shown when displaying the formatted value
+   */
+  get displayDecimals(): number {
+    return this._displayDecimals
+  }
 
   /**
    * @param raw  Value used or returned during smart contract calls for uints
@@ -28,15 +50,25 @@ export class Wei {
     this.decimals = decimals
   }
 
-  get parsed(): string {
-    return formatUnits(this.raw, this.decimals)
+  /**
+   * @return Raw BigNumber formatted to a decimal value as a string
+   */
+  get format(): string {
+    return fromBn(this.raw, this.decimals)
   }
 
   /**
-   * @return Float value used in smart contract calls
+   * @return Floating number formatted from raw wei value
    */
   get float(): number {
-    return parseFloat(this.parsed)
+    return parseFloat(this.format)
+  }
+
+  /**
+   * @return Formatted value to be used when displaying it
+   */
+  get display(): string {
+    return this.float.toFixed(this._displayDecimals)
   }
 
   add(x: BigNumberish | Wei): Wei {
@@ -77,7 +109,7 @@ export class Wei {
   }
 
   log() {
-    console.log(this.parsed)
+    console.log(this.display)
   }
 
   toString(): string {
