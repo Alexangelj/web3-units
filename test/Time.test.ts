@@ -1,11 +1,6 @@
-import { FixedPointX64, parseTime, Time, toBN } from '../src'
+import { parseTime, Time } from '../src'
 
 describe('Time', function() {
-  it('initializes a fixed point 64x64 integer', async function() {
-    const value = new FixedPointX64(toBN('11288117352251203228'))
-    expect(value.parsed).toBe(0.6119300678291038)
-  })
-
   it('parseTime', async function() {
     const value = 1
     expect(parseTime(value).raw).toStrictEqual(Math.floor(value * Time.YearInSeconds))
@@ -21,9 +16,53 @@ describe('Time', function() {
     expect(parseTime(value).seconds).toBe(Math.floor(value * Time.YearInSeconds))
   })
 
+  it('float', async function() {
+    const value = 1
+    expect(parseTime(value).float).toBe(Math.floor(value * Time.YearInSeconds))
+  })
+
+  it('add', async function() {
+    const value = 1
+    expect(parseTime(value).add(1).raw).toBe(Math.floor(value * Time.YearInSeconds) + 1)
+  })
+
   it('sub', async function() {
     const value = 1
     expect(parseTime(value).sub(1).raw).toBe(Math.floor(value * Time.YearInSeconds) - 1)
+  })
+
+  it('gt', async function() {
+    const value = 1
+    expect(parseTime(value).gt(0)).toBe(true)
+  })
+
+  it('gte', async function() {
+    const value = 1
+    expect(parseTime(value).gte(1)).toBe(true)
+  })
+
+  it('lt', async function() {
+    const value = 1
+    expect(parseTime(value).gt(2)).toBe(true)
+  })
+
+  it('lte', async function() {
+    const value = 1
+    expect(parseTime(value).lte(Math.floor(value * Time.YearInSeconds))).toBe(true)
+  })
+
+  it('eq', async function() {
+    const value = 1
+    expect(parseTime(value).eq(Math.floor(value * Time.YearInSeconds))).toBe(true)
+  })
+
+  it('isZero', async function() {
+    const value = 0
+    expect(parseTime(value).isZero()).toBe(true)
+  })
+
+  it('now', async function() {
+    expect(Time.now).toBeGreaterThan(0)
   })
 
   it('toString()', async function() {

@@ -22,6 +22,13 @@ export class Time {
   }
 
   /**
+   * @return seconds float value used in smart contracts (e.g. block.timestamp)
+   */
+  get float(): number {
+    return this.raw
+  }
+
+  /**
    * @return year float value used in javascript math
    */
   get years(): number {
@@ -38,8 +45,8 @@ export class Time {
   /**
    * @return Current date timestamp in seconds
    */
-  get now(): number {
-    return +Date.now() / 1000
+  public static get now(): number {
+    return Math.floor(+Date.now() / 1000)
   }
 
   add(x: BigNumberish | Time): Time {
@@ -50,6 +57,35 @@ export class Time {
   sub(x: BigNumberish | Time): Time {
     x = x.toString()
     return new Time(this.raw - +x.toString())
+  }
+
+  gt(x: BigNumberish | Time): boolean {
+    x = parseFloat(x.toString())
+    return this.raw > x
+  }
+
+  gte(x: BigNumberish | Time): boolean {
+    x = parseFloat(x.toString())
+    return this.raw >= x
+  }
+
+  lt(x: BigNumberish | Time): boolean {
+    x = parseFloat(x.toString())
+    return this.raw < x
+  }
+
+  lte(x: BigNumberish | Time): boolean {
+    x = parseFloat(x.toString())
+    return this.raw <= x
+  }
+
+  eq(x: BigNumberish | Time): boolean {
+    x = parseFloat(x.toString())
+    return this.raw === x
+  }
+
+  isZero(): boolean {
+    return this.raw === 0
   }
 
   toString(): string {

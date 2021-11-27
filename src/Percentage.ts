@@ -1,35 +1,73 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { toBN } from './utils'
+import { toBn } from 'evm-bn'
 
 /**
- * @notice Parses a float percentage value with up to 4 decimals (e.g. 0.1) into a mantissa scaled Percentage
- * @param percent Value of percentage as a float
- * @returns Percentage class with a raw percentage value scaled by 1e4
+ * @notice Parses a decimal percentage value with a precision up to 4 (e.g. 0.1) into basis points
+ * @param percentageDecimal Value of percentage as a decimal
+ * @returns Percentage class with a raw percentage value in basis points
  */
-export const parsePercentage = (percent: number): Percentage => {
-  const scalar = Math.pow(10, Percentage.Mantissa)
-  const floored = Math.floor(percent * scalar)
-  return new Percentage(toBN(floored))
+export const parsePercentage = (percentageDecimal: number | string): Percentage => {
+  const parsed = toBn(percentageDecimal.toString(), Percentage.Mantissa)
+  return new Percentage(parsed)
 }
 
 /**
- * @notice EVM percentage representation (values scaled by percentage constant)
+ * @notice Handles explicit unit conversion between bps, points, and decimal percentage values
  */
 export class Percentage {
   readonly raw: BigNumber
+  readonly precision: number = 4
+
+  private _displayDecimals: number = 2
 
   /**
-   * @param raw  A scaled percentage value used or returned during smart contract calls
+   * @notice Sets the amount of decimals to use when displaying the formatted value
+   */
+  set displayDecimals(x: number) {
+    this._displayDecimals = x
+  }
+
+  /**
+   * @return Amount of decimals shown when displaying the formatted value
+   */
+  get displayDecimals(): number {
+    return this._displayDecimals
+  }
+
+  /**
+   * @param raw  Basis points in BigNumber format
    * */
   constructor(raw: BigNumber) {
     this.raw = raw
   }
 
   /**
-   * @return Float value used in javascript math
+   * @return Utility to return an explicit basis point unit, e.g. 10_000 = 100%
+   */
+  get bps(): number {
+    return this.raw.toNumber()
+  }
+
+  /**
+   * @return Percentage as a decimal, e.g. 1.00 = 100%
    */
   get float(): number {
-    return parseFloat(this.raw.toString()) / Math.pow(10, Percentage.Mantissa)
+    return this.raw.toNumber() / Percentage.BasisPoints
+  }
+
+  /**
+   * @return Utility to return an explicit percentage point unit, e.g. 1 = 1%
+   */
+  get points(): number {
+    return this.raw.toNumber() / Percentage.Points
+  }
+
+  /**
+   * @notice Use for displaying the percentage point
+   * @return Percentage point with two decimal places, e.g. 10.00 = 10.00%
+   */
+  get display(): string {
+    return this.points.toFixed(this._displayDecimals)
   }
 
   toString(): string {
@@ -37,9 +75,23 @@ export class Percentage {
   }
 
   /**
-   * @return Mantissa used to scale percentages in the smart contracts
+   * @return Mantissa used to scale values to basis points
    */
   static get Mantissa(): number {
     return 4
+  }
+
+  /**
+   * @return Amount of basis points in 100%
+   */
+  static get BasisPoints(): number {
+    return 1e4
+  }
+
+  /**
+   * @return Amount of points in 100%
+   */
+  static get Points(): number {
+    return 1e2
   }
 }
