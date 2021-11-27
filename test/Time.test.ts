@@ -61,6 +61,10 @@ describe('Time', function() {
     expect(parseTime(value).isZero()).toBe(true)
   })
 
+  it('now', async function() {
+    expect(Time.now).toBeGreaterThan(0)
+  })
+
   it('toString()', async function() {
     const value = 1
     expect(parseTime(value).toString()).toBe(Math.floor(value * Time.YearInSeconds).toString())

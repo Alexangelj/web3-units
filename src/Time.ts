@@ -45,7 +45,7 @@ export class Time {
   /**
    * @return Current date timestamp in seconds
    */
-  public static now(): number {
+  public static get now(): number {
     return Math.floor(+Date.now() / 1000)
   }
 
