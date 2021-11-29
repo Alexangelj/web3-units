@@ -83,6 +83,11 @@ describe('Wei', function() {
     expect(+value.div(2).toString()).toBe(1)
   })
 
+  it('Wei#div by 0', async function() {
+    const value = new Wei(toBN(2))
+    expect(() => value.div(0)).toThrow()
+  })
+
   it('Wei#gt', async function() {
     const value = new Wei(toBN(2))
     expect(value.gt(1)).toBe(true)

@@ -84,7 +84,7 @@ export class Wei {
   }
 
   div(x: BigNumberish | Wei): Wei {
-    if (+x.toString() <= 0) return parseWei('0')
+    if (+x.toString() <= 0) throw Error('Attempting to divide by 0 or negative')
     return new Wei(this.raw.div(x.toString()), this.decimals)
   }
 
