@@ -6,6 +6,11 @@ describe('FixedPointX64', function() {
     expect(value.parsed).toBe(0.6119300678291038)
   })
 
+  it('from', async function() {
+    const value = FixedPointX64.from('3.345867008995041e+57')
+    expect(+value.raw.toString()).toEqual(+'3.345867008995041e+57')
+  })
+
   it('parseFixedPointX64', async function() {
     const value = 1
     expect(parseFixedPointX64(value).parsed).toBe(1)
