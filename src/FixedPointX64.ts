@@ -1,7 +1,8 @@
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
+import { BigNumber, BigNumberish, parseFixed } from '@ethersproject/bignumber'
 import { Percentage } from './Percentage'
 import { Wei } from './Wei'
 import { toBN } from './utils'
+import { toBn } from 'evm-bn'
 
 /**
  * @notice Parses a regular value into a signed fixed point 64x64 integer, with 2^64 denominator
@@ -14,7 +15,8 @@ export function parseFixedPointX64(value: BigNumberish | Wei, decimals: number =
   value = value.toString()
   if (Math.sign(+value) < 0) throw new Error(`Attempting to parse signed value: ${value}`)
   if (+value > Math.pow(2, 64 - 1)) throw new Error(`Attempting to parse too large of a number: ${value}`)
-  return new FixedPointX64(FixedPointX64.Denominator.mul(value), decimals)
+  const number: BigNumber = toBn(value, 18).div(parseFixed('1', 18))
+  return new FixedPointX64(FixedPointX64.Denominator.mul(number), decimals)
 }
 
 /**
@@ -23,6 +25,16 @@ export function parseFixedPointX64(value: BigNumberish | Wei, decimals: number =
 export class FixedPointX64 {
   readonly raw: BigNumber
   readonly decimals: number
+
+  /**
+   * @param fixedPointX64 Raw fixed point string value
+   * @param decimals Amount of decimals of the fixed point number
+   * @returns FixedPointX64 class instance
+   */
+  public static from(fixedPointX64: string, decimals = 18): FixedPointX64 {
+    const number: BigNumber = toBn(fixedPointX64, 18).div(parseFixed('1', 18))
+    return new FixedPointX64(number, decimals)
+  }
 
   /**
    * @notice Int128s are stored as numerators that all have a denominator of 2^64
@@ -46,6 +58,13 @@ export class FixedPointX64 {
    */
   get float(): number {
     return this.parsed / Math.pow(10, this.decimals)
+  }
+
+  /**
+   * @return Formatted value to be used to display the value in a human-readable format
+   */
+  get display(): string {
+    return this.float.toFixed(2)
   }
 
   /**
