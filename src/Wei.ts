@@ -50,6 +50,10 @@ export class Wei {
     this.decimals = decimals
   }
 
+  get hex(): string {
+    return this.raw._hex
+  }
+
   /**
    * @return Raw BigNumber formatted to a decimal value as a string
    */
