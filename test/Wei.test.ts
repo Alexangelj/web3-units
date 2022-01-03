@@ -1,6 +1,6 @@
 import { parseEther, parseUnits } from '@ethersproject/units'
 import { toBn } from 'evm-bn'
-import { parseWei, Wei, toBN } from '../src'
+import { parseWei, Wei, toBN, toHex } from '../src'
 
 describe('Wei', function() {
   it('initializes a new Wei', async function() {
@@ -61,6 +61,11 @@ describe('Wei', function() {
     expect(value.display).toBe(amount.toFixed(value.displayDecimals))
     expect(value.gt(parseUnits('3', decimals))).toBe(false)
     expect(value.gt(parseUnits('1', decimals))).toBe(true)
+  })
+
+  it('Wei#hex', async function() {
+    const value = new Wei(toBN(1))
+    expect(value.hex).toBe(toHex(value.raw))
   })
 
   it('Wei#add', async function() {

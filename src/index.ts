@@ -1,4 +1,5 @@
 export * from './FixedPointX64'
+export * from './Floating'
 export * from './Percentage'
 export * from './Time'
 export * from './Wei'
